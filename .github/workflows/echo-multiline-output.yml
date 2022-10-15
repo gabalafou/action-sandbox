@@ -15,7 +15,6 @@ jobs:
       - run: echo "outputs.sha ${{ needs.pr_sha_from_number.outputs.sha }}"
 
   pr_sha_from_number:
-    if: github.event.issue.pull_request
     runs-on: ubuntu-latest
     outputs:
       sha: ${{ fromJSON(steps.get_pr.outputs.data).head.sha }}
@@ -24,7 +23,7 @@ jobs:
         name: GitHub API Request
         uses: octokit/request-action@v2.1.0
         with:
-          route: GET /repos/${{ github.repository }}/pulls/${{ github.event.issue.number }}
+          route: GET /repos/${{ github.repository }}/pulls/1
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
       - name: Echo outputs.data
