@@ -1,0 +1,32 @@
+name: Play with echoing output from api request
+
+on:
+  workflow_dispatch:
+
+jobs:
+  print-info:
+    if: github.event.issue.pull_request
+    needs: pr_sha_from_number
+    runs-on: ubuntu-latest
+    steps:
+      - run: echo "🎉 The job was automatically triggered by a ${{ github.event_name }} event."
+      - run: echo "🐧 This job is now running on a ${{ runner.os }} server hosted by GitHub!"
+      - run: echo "🔎 The name of your branch is ${{ github.ref }} and your repository is ${{ github.repository }}."
+      - run: echo "outputs.sha ${{ needs.pr_sha_from_number.outputs.sha }}"
+
+  pr_sha_from_number:
+    if: github.event.issue.pull_request
+    runs-on: ubuntu-latest
+    outputs:
+      sha: ${{ fromJSON(steps.get_pr.outputs.data).head.sha }}
+    steps:
+      - id: get_pr
+        name: GitHub API Request
+        uses: octokit/request-action@v2.1.0
+        with:
+          route: GET /repos/${{ github.repository }}/pulls/${{ github.event.issue.number }}
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+      - name: Echo outputs.data
+        run: |
+          echo '${{ steps.get_pr.outputs.data }}'
