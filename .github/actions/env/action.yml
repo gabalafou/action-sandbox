@@ -1,6 +1,5 @@
 name: List environment variables
 description: List all environment variables
-inputs:
 runs:
   using: composite
   steps:
