@@ -8,5 +8,5 @@ runs:
       shell: bash
 
     - name: Echo ${{ github.action_repository }}
-      run: echo "github.action_reposotiry = ${{ github.action_repository }}"
+      run: echo "github.action_repository = ${{ github.action_repository }}"
       shell: bash
